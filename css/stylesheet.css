@@ -1,10 +1,15 @@
 body{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     margin-top: 10%;
 }
 
+#game-over{
+    align-self: center;
+}
+
 .game-board{
+    align-self: center;
     display: flex;
     flex-flow: row wrap;
     justify-content: center;

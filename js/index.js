@@ -16,6 +16,7 @@ function main(){
     document.body.addEventListener('keydown', function(event)
     {
         const keyPress = event.key;
+        
         if(keyPress === "ArrowDown"){
             board = moveTilesDown(board)
             board = generateNewTile(board)
@@ -28,10 +29,15 @@ function main(){
             board = moveTilesRight(board)
             board = generateNewTile(board)
             renderBoard(board)
-        } else {
+        } else if(keyPress === "ArrowLeft"){
             board = moveTilesLeft(board)
             board = generateNewTile(board)
             renderBoard(board)
+        }
+
+        if(boardIsFull(board) && !hasAdjacentTiles('all', board)){
+            console.log('Game Over!')
+            document.getElementById("game-over").innerHTML = "Game Over!"
         }
         
         console.log(board)
@@ -43,7 +49,7 @@ function main(){
 function generateNewTile(gameBoard){
 
     let r = Math.floor(Math.random() * 100)
-    
+
     while(!boardIsFull(gameBoard)){
         let i = Math.floor(Math.random() * 4);
         let j = Math.floor(Math.random() * 4);
@@ -266,6 +272,12 @@ function renderBoard(gameBoard){
                     gameBoardElement.children[index].style.backgroundColor = "#FFC074"
                 } else if(gameBoard[i][j] >= 128){
                     gameBoardElement.children[index].style.backgroundColor = "#FFC107"
+                    
+                    if(gameBoard[i][j] % 2048 === 0){
+                        document.getElementById("game-over").innerHTML = "You Won!"
+                        gameBoardElement.children[index].style.backgroundColor = "#7CD1B8"
+
+                    }
                 } 
             }
                     
@@ -285,6 +297,31 @@ function boardIsFull(gameBoard){
     }
 
     return true;
+}
+
+function hasAdjacentTiles(direction, gameBoard){
+    if(direction === "right" || direction === "left" || direction === "all"){
+        for(let row = 0; row < 4; row++){
+            for(let col = 0; col < 3; col++){
+                if(gameBoard[row][col] > 0 && gameBoard[row][col] === gameBoard[row][col+1]){
+                    return true;
+                }
+            }
+        }
+    }
+
+    if(direction === "up" || direction === "down" || direction === "all"){
+        for(let row = 0; row < 3; row++){
+            for(let col = 0; col < 4; col++){
+                if(gameBoard[row][col] > 0 && gameBoard[row][col] === gameBoard[row+1][col]){
+                    return true
+                }
+            }
+        }
+    }
+
+    return false
+
 }
 
 main()
