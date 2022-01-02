@@ -10,49 +10,33 @@ function main(){
     board = generateNewTile(board)
 
     renderBoard(board)
+    playGame(board)
+}
 
-    console.log(board)
-
-    document.body.addEventListener('keydown', function(event)
-    {
+function playGame(board){
+    document.body.addEventListener('keydown', function(event){
+        
         const keyPress = event.key;
         oldBoard = JSON.parse(JSON.stringify(board));
 
         if(keyPress === "ArrowDown"){
             board = moveTilesDown(board)
-            if(boardHasChanged(board, oldBoard)){
-                board = generateNewTile(board)
-            }
-            renderBoard(board)
         } else if( keyPress === "ArrowUp"){
             board = moveTilesUp(board)
-            if(boardHasChanged(board, oldBoard)){
-                board = generateNewTile(board)
-            }
-            renderBoard(board)
         } else if(keyPress === "ArrowRight"){
             board = moveTilesRight(board)
-            if(boardHasChanged(board, oldBoard)){
-                board = generateNewTile(board)
-            }
-            renderBoard(board)
         } else if(keyPress === "ArrowLeft"){
             board = moveTilesLeft(board)
-            if(boardHasChanged(board, oldBoard)){
-                board = generateNewTile(board)
-            }
-            renderBoard(board)
         }
 
-        if(boardIsFull(board) && !hasAdjacentTiles('all', board)){
-            console.log('Game Over!')
+        if(boardHasChanged(board, oldBoard)){
+            board = generateNewTile(board)
+            renderBoard(board)
+        } else if(boardIsFull(board) && !hasAdjacentTiles('all', board)){
             document.getElementById("game-over").innerHTML = "Game Over!"
         }
-        
-        console.log(board)
-        
+                
     })
-
 }
 
 function generateNewTile(gameBoard){
