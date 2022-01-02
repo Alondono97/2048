@@ -9,6 +9,8 @@ function main(){
     board = generateNewTile(board)
     board = generateNewTile(board)
 
+    renderBoard(board)
+
     console.log(board)
 
     document.body.addEventListener('keydown', function(event)
@@ -16,15 +18,22 @@ function main(){
         const keyPress = event.key;
         if(keyPress === "ArrowDown"){
             board = moveTilesDown(board)
+            board = generateNewTile(board)
+            renderBoard(board)
         } else if( keyPress === "ArrowUp"){
             board = moveTilesUp(board)
+            board = generateNewTile(board)
+            renderBoard(board)
         } else if(keyPress === "ArrowRight"){
             board = moveTilesRight(board)
+            board = generateNewTile(board)
+            renderBoard(board)
         } else {
             board = moveTilesLeft(board)
+            board = generateNewTile(board)
+            renderBoard(board)
         }
-
-        board = generateNewTile(board)
+        
         console.log(board)
         
     })
@@ -32,15 +41,25 @@ function main(){
 }
 
 function generateNewTile(gameBoard){
-    while(true){
+
+    let r = Math.floor(Math.random() * 100)
+    
+    while(!boardIsFull(gameBoard)){
         let i = Math.floor(Math.random() * 4);
         let j = Math.floor(Math.random() * 4);
 
         if(gameBoard[i][j] === 0){
-            gameBoard[i][j] = 2;
+            if(r > 4){
+                gameBoard[i][j] = 2;
+            } else {
+                gameBoard[i][j] = 4;
+            }
+
             return gameBoard
         }
     }
+
+    return gameBoard
 }
 
 function moveTilesDown(gameBoard){
@@ -217,6 +236,55 @@ function moveTilesLeft(gameBoard){
     }
 
     return gameBoard
+}
+
+function renderBoard(gameBoard){
+
+    gameBoardElement = document.getElementById("game-board");
+
+    for(let i = 0; i < 4; i++){
+        for(let j = 0; j < 4; j++){
+            let index = i * 4 + j
+
+        
+            if(gameBoard[i][j] === 0) {
+                gameBoardElement.children[index].children[0].innerHTML = ""
+                gameBoardElement.children[index].style.backgroundColor = "#C2B8A3";
+            } else if(gameBoard[i][j] > 0) {
+                gameBoardElement.children[index].children[0].innerHTML = gameBoard[i][j]
+                gameBoardElement.children[index].style.backgroundColor = "#FEF7DC";
+
+                if(gameBoard[i][j] === 4){
+                    gameBoardElement.children[index].style.backgroundColor = "#EDCFA9";
+                } else if(gameBoard[i][j] === 8){
+                    gameBoardElement.children[index].style.backgroundColor = "#E89F71";
+                } else if(gameBoard[i][j] === 16){
+                    gameBoardElement.children[index].style.backgroundColor = "#D57149";
+                } else if(gameBoard[i][j] === 32){
+                    gameBoardElement.children[index].style.backgroundColor = "#E99497"
+                } else if(gameBoard[i][j] === 64){
+                    gameBoardElement.children[index].style.backgroundColor = "#FFC074"
+                } else if(gameBoard[i][j] >= 128){
+                    gameBoardElement.children[index].style.backgroundColor = "#FFC107"
+                } 
+            }
+                    
+                
+        }
+    }
+
+}
+
+function boardIsFull(gameBoard){
+    for(const row of gameBoard){
+        for(const col of row){
+            if(col === 0){
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 main()

@@ -1,3 +1,9 @@
+body{
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+
 .game-board{
     display: flex;
     flex-flow: row wrap;
@@ -8,10 +14,24 @@
     border-width: 2px;
     height: 425px;
     width: 425px;
+    background-color: #A19882;
+    border-radius: 1%;
+    border-color: #A19882;
 }
 
 .tile-container{
     width: 100px;
     height: 100px;
     border-style: solid;
+    text-align: center;
+    border-color: #A19882;
+    background-color: #9A9483;
+    border-radius: 10%;
+}
+
+.tile{
+    color: #696464;
+    margin-top: 33px;
+    border-radius: 1%;
+    font-size: 30px;
 }
