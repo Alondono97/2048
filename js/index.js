@@ -16,22 +16,31 @@ function main(){
     document.body.addEventListener('keydown', function(event)
     {
         const keyPress = event.key;
-        
+        oldBoard = JSON.parse(JSON.stringify(board));
+
         if(keyPress === "ArrowDown"){
             board = moveTilesDown(board)
-            board = generateNewTile(board)
+            if(boardHasChanged(board, oldBoard)){
+                board = generateNewTile(board)
+            }
             renderBoard(board)
         } else if( keyPress === "ArrowUp"){
             board = moveTilesUp(board)
-            board = generateNewTile(board)
+            if(boardHasChanged(board, oldBoard)){
+                board = generateNewTile(board)
+            }
             renderBoard(board)
         } else if(keyPress === "ArrowRight"){
             board = moveTilesRight(board)
-            board = generateNewTile(board)
+            if(boardHasChanged(board, oldBoard)){
+                board = generateNewTile(board)
+            }
             renderBoard(board)
         } else if(keyPress === "ArrowLeft"){
             board = moveTilesLeft(board)
-            board = generateNewTile(board)
+            if(boardHasChanged(board, oldBoard)){
+                board = generateNewTile(board)
+            }
             renderBoard(board)
         }
 
@@ -321,7 +330,18 @@ function hasAdjacentTiles(direction, gameBoard){
     }
 
     return false
+}
 
+function boardHasChanged(newBoard, oldBoard){
+    for(let row = 0; row < 4; row++){
+        for(let col = 0; col < 4; col++){
+            if(newBoard[row][col] !== oldBoard[row][col]){
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 main()
